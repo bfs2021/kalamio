@@ -10,9 +10,11 @@ on:
   # e.g. when GitHub drops a push/PR event during an incident.
   workflow_dispatch:
 
-# Cancel superseded runs on the same ref (e.g. rapid pushes to a PR branch).
+# Cancel superseded runs on the same PR (e.g. rapid pushes to a PR branch). Push and
+# manual runs each get their own group (run_id), so runs on main are never queued or
+# cancelled — every commit there gets its own complete result.
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
