@@ -15,15 +15,19 @@ const { getMock, setMock, saddMock, expireMock, smembersMock, delMock } = vi.hoi
   smembersMock: vi.fn(),
   delMock: vi.fn(),
 }))
+// A regular function (not an arrow) so config/redis.js can call it with `new` —
+// Vitest 4+ mocks keep the implementation's constructability.
 vi.mock('@upstash/redis', () => ({
-  Redis: vi.fn(() => ({
-    get: getMock,
-    set: setMock,
-    sadd: saddMock,
-    expire: expireMock,
-    smembers: smembersMock,
-    del: delMock,
-  })),
+  Redis: vi.fn(function () {
+    return {
+      get: getMock,
+      set: setMock,
+      sadd: saddMock,
+      expire: expireMock,
+      smembers: smembersMock,
+      del: delMock,
+    }
+  }),
 }))
 
 import { cacheGet, cacheSet, cacheAddToTag, cacheInvalidateTags, isCacheEnabled } from './redis.js'
