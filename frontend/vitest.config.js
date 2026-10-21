@@ -2,8 +2,7 @@ import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
 // Dedicated test config (kept separate from vite.config.js so the app's build
-// chunking doesn't affect tests). Vitest bundles its own Vite, so this coexists
-// with the project's Vite 4 without conflict.
+// chunking doesn't affect tests). Vitest runs on the project's own Vite.
 export default defineConfig({
   plugins: [react()],
   test: {

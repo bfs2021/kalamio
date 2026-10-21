@@ -5,6 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
+    // Vite 7's default target dropped Safari 14–15 / Chrome < 107; keep the
+    // Vite 4 browser support so readers on older phones aren't locked out.
+    target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
     rollupOptions: {
       output: {
         manualChunks(id) {
