@@ -7,7 +7,7 @@ import { doc, p, h2, h3, ul, ol, quote, code, hr } from './seed-helpers.js';
 export const DEMO_PASSWORD = 'Demo1234';
 
 export const USERS = [
-    { username: 'demo', fullname: 'Demo Writer', email: 'demo@example.com', joinedDaysAgo: 40,
+    { username: 'demo', fullname: 'Jordan Lee', email: 'demo@example.com', joinedDaysAgo: 40,
       bio: 'The shared local account. Write, break things, and reset with npm run seed -- --reset.' },
     { username: 'aarav', fullname: 'Aarav Mehta', email: 'aarav@example.com', joinedDaysAgo: 120,
       bio: 'Engineer building AI features that people actually use.', github: 'https://github.com' },
