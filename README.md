@@ -95,7 +95,7 @@ source under the [AGPL-3.0](LICENSE), and contributions are welcome.
 
 ## Tech stack
 
-| | |
+| Layer | Built with |
 |---|---|
 | **Frontend** | React 18, Vite, Tailwind CSS, TipTap (ProseMirror), TanStack Query, Socket.IO client |
 | **Backend** | Node.js, Express, MongoDB with Mongoose, Socket.IO, Zod, Passport (Google sign-in) |
