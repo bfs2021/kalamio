@@ -40,13 +40,21 @@ cp frontend/.env.example frontend/.env
 cd server && npm install && cd ..
 cd frontend && npm install && cd ..
 
-# 5. Run the API and the app (two terminals)
+# 5. Fill the local database with demo users and articles
+cd server && npm run seed && cd ..
+
+# 6. Run the API and the app (two terminals)
 cd server && npm run dev        # API on http://localhost:8080
 cd frontend && npm run dev      # app on http://localhost:5173
 ```
 
-Open http://localhost:5173 and sign up. The verification code is "emailed" to the local
-inbox — open **http://localhost:8025** to read it.
+Open http://localhost:5173 and log in as **`demo@example.com`** with password **`Demo1234`**.
+The seed creates six writers (all with that password), twelve articles across every home page
+topic, comments, likes, follows, a publication and a draft. Log in as two different users in
+two browsers to test likes, follows and chat. The welcome article lists every account.
+
+You can also sign up with your own email: the verification code is "emailed" to the local
+inbox at **http://localhost:8025**.
 
 | What | Where |
 |---|---|
@@ -62,7 +70,11 @@ inbox — open **http://localhost:8025** to read it.
 docker compose ps         # check the services are running
 docker compose down       # stop them (your data is kept)
 docker compose down -v    # stop and wipe all local data
+npm run seed -- --reset   # (in server/) wipe the local database and seed it again
 ```
+
+The seed only runs against local services: it refuses to touch MongoDB Atlas, real AWS S3,
+or anything with `NODE_ENV=production`.
 
 **Optional features** — Google sign-in and Upstash response caching are off by default.
 The app works fine without them. See `server/.env.example` if you want to turn them on.

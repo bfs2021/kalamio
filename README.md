@@ -35,11 +35,15 @@ cp server/.env.example   server/.env        # local DB, storage, email, dev JWT 
 cd frontend && npm install
 cd ../server && npm install
 
-# 4. Run (two terminals)
+# 4. Fill the local database with demo users and articles
+npm run seed                                # in server/; --reset to start over
+
+# 5. Run (two terminals)
 cd server   && npm run dev                  # API on :8080
 cd frontend && npm run dev                  # app on :5173
 ```
 
+Log in as `demo@example.com` / `Demo1234` (every seeded account uses that password).
 Sign-up codes land in the local inbox at http://localhost:8025.
 
 The frontend expects `VITE_SERVER_DOMAIN` to point at the running backend (default
