@@ -142,17 +142,16 @@ server/              REST API and real-time server (Express, Mongoose, Socket.IO
   routes/            URL → handler mapping   services/      email, tokens, sign-in codes
   middleware/        auth, caching, limits   scripts/       seed data and maintenance scripts
 docker-compose.yml   local development services
-docs/                deployment and operations guides
+docs/                self-hosting guide
 ```
 
-## Deployment
+## Self-hosting
 
-[kalamio.com](https://kalamio.com) runs on Google Cloud Run, with Cloud Build deploying every merge
-to `main` to the development environment and every release to production. Both the API and the web
-app ship as Docker images ([`server/Dockerfile`](server/Dockerfile),
-[`frontend/Dockerfile`](frontend/Dockerfile)), so they run on any container host.
+Kalamio ships as two Docker images, the API ([`server/Dockerfile`](server/Dockerfile)) and the web
+app ([`frontend/Dockerfile`](frontend/Dockerfile)). They run on any container host with MongoDB,
+S3-compatible storage and an SMTP provider.
 
-[docs/deployment.md](docs/deployment.md) covers the production architecture, configuration and secrets.
+[docs/self-hosting.md](docs/self-hosting.md) covers configuration, storage, scaling and running behind a CDN.
 
 ## Contributing
 
