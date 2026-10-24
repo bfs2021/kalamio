@@ -17,6 +17,31 @@ reviews:
   # Two maintainers: reviewer suggestions add nothing.
   suggested_reviewers: false
 
+  # One "type: …" label per PR, taken from its Conventional Commits title.
+  # ("community" is added by the pr-labels workflow, not by CodeRabbit.)
+  auto_apply_labels: true
+  labeling_instructions:
+    - label: 'type: feature'
+      instructions: Apply when the PR title starts with "feat" (a new feature or capability).
+    - label: 'type: bug'
+      instructions: Apply when the PR title starts with "fix" (a bug fix).
+    - label: 'type: docs'
+      instructions: Apply when the PR title starts with "docs" (documentation only).
+    - label: 'type: refactor'
+      instructions: Apply when the PR title starts with "refactor", "perf" or "style" (code changes that don't add features or fix bugs).
+    - label: 'type: test'
+      instructions: Apply when the PR title starts with "test" (tests only).
+    - label: 'type: chore'
+      instructions: Apply when the PR title starts with "chore", "build", "ci" or "revert" (tooling, dependencies, CI, reverts).
+  mutually_exclusive_groups:
+    type:
+      - 'type: feature'
+      - 'type: bug'
+      - 'type: docs'
+      - 'type: refactor'
+      - 'type: test'
+      - 'type: chore'
+
   auto_review:
     enabled: true
     drafts: false

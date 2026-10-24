@@ -1,0 +1,37 @@
+name: PR labels
+
+# Adds the "community" label to PRs from people outside the Kalamio team, so outside
+# contributions stand out in the PR list. (CodeRabbit adds the "type: …" labels,
+# see .coderabbit.yaml.)
+#
+# pull_request_target so it can label PRs from forks. Safe: it never checks out or
+# runs PR code, and it reads only the PR number and author login from the event.
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  community:
+    name: Label community PRs
+    # Dependabot and other bots aren't community contributors.
+    if: github.event.pull_request.user.type != 'Bot'
+    runs-on: ubuntu-latest
+    steps:
+      # Checks repo permission rather than author_association, because a private org
+      # member shows up there as CONTRIBUTOR.
+      - name: Add "community" if the author has no write access
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          permission=$(gh api "repos/$REPO/collaborators/$AUTHOR/permission" --jq .permission 2>/dev/null || echo none)
+          echo "$AUTHOR has '$permission' access"
+          case "$permission" in
+            admin|maintain|write) echo "Team member, no label." ;;
+            *) gh api -X POST "repos/$REPO/issues/$PR/labels" -f "labels[]=community" --silent ;;
+          esac
