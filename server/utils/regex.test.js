@@ -22,6 +22,13 @@ describe('emailRegex', () => {
     ])('rejects obvious typo %s', (email) => {
         expect(emailRegex.test(email)).toBe(false);
     });
+
+    it('rejects a 10,000-character dotted string quickly', () => {
+        const dotted = `${'a'.repeat(4999)}@${'.'.repeat(5000)}.com`;
+        const started = performance.now();
+        expect(emailRegex.test(dotted)).toBe(false);
+        expect(performance.now() - started).toBeLessThan(100);
+    });
 });
 
 describe('passwordRegex', () => {
