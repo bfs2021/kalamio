@@ -4,7 +4,7 @@ import AnimationWrapper from "../common/page-animation";
 import InputBox from "../components/input.component";
 import toast from "react-hot-toast";
 import api from "../common/api";
-import { isValidPassword } from "../common/validation";
+import { isValidPassword, PASSWORD_ERROR } from "../common/validation";
 import { lookInSession, storeInSession } from "../common/session";
 import { UserContext } from "../App";
 
@@ -73,7 +73,7 @@ const ChangePassword = () => {
         }
 
         if(!isValidPassword(currentPassword) || !isValidPassword(newPwd)){
-            return toast.error("Password should be 6 to 64 characters long with a numeric, 1 lowercase and 1 uppercase letters")
+            return toast.error(PASSWORD_ERROR)
         }
 
         if(newPwd !== confirmPassword){

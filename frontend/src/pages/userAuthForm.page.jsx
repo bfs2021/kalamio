@@ -6,7 +6,7 @@ import googleIcon from "../imgs/google.png";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../common/api";
-import { emailRegex, isValidPassword } from "../common/validation";
+import { emailRegex, isValidPassword, PASSWORD_ERROR } from "../common/validation";
 import { storeInSession } from "../common/session";
 import { UserContext } from "../App";
 import Icon from "../components/Icon";
@@ -48,7 +48,7 @@ const UserAuthForm = ( {type} ) => {
             return toast.error("Email is invalid" );
         }
         if(!isValidPassword(password)){
-            return toast.error("Password should be 6 to 64 characters long with a numeric, 1 lowercase and 1 uppercase letters");
+            return toast.error(PASSWORD_ERROR);
         }
 
         api.post(serverRoute, formData)

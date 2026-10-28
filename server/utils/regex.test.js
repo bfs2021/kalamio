@@ -37,6 +37,18 @@ describe('passwordRegex', () => {
         expect(passwordRegex.test(`Aa1${'x'.repeat(62)}`)).toBe(false);
     });
 
+    it('counts an emoji as one character, not two UTF-16 units', () => {
+        const password = `Aa1${'x'.repeat(60)}😀`; // 64 code points, 67 bytes
+        expect([...password].length).toBe(64);
+        expect(Buffer.byteLength(password, 'utf8')).toBe(67);
+        expect(passwordRegex.test(password)).toBe(true);
+        expect(isValidPassword(password)).toBe(true);
+    });
+
+    it('rejects 65 code points even when an emoji is present', () => {
+        expect(passwordRegex.test(`Aa1${'x'.repeat(61)}😀`)).toBe(false);
+    });
+
     it.each([
         'Aa1abc', // 6 characters, accepted minimum
         'Aa1abcde',

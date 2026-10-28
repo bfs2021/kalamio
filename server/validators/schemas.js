@@ -2,12 +2,13 @@ import { z } from 'zod';
 import { PROVIDER_IDS, isSupportedModel } from '../services/ai/providers.js';
 import { proposalSchema, toolCallSchema, PROPOSAL_LIMITS } from '../services/ai/editor-tools.js';
 import { SUMMARY_MAX_CHARS } from '../services/ai/context.js';
+import { emailRegex } from '../utils/regex.js';
 
 // ── Auth Schemas ────────────────────────────────────────────────────
 
 export const signupSchema = z.object({
     fullname: z.string().min(3, 'Full name must be at least 3 characters').max(50, 'Full name too long'),
-    email: z.string().email('Invalid email address').max(100),
+    email: z.string().regex(emailRegex, 'Invalid email address').max(100),
     password: z.string().min(6, 'Password must be at least 6 characters').max(128),
 });
 
@@ -17,16 +18,16 @@ export const signinSchema = z.object({
 });
 
 export const verifyEmailSchema = z.object({
-    email: z.string().email('Invalid email address'),
+    email: z.string().regex(emailRegex, 'Invalid email address'),
     otp: z.string().length(6, 'OTP must be 6 digits'),
 });
 
 export const forgotPasswordSchema = z.object({
-    email: z.string().email('Invalid email address'),
+    email: z.string().regex(emailRegex, 'Invalid email address'),
 });
 
 export const resetPasswordSchema = z.object({
-    email: z.string().email('Invalid email address'),
+    email: z.string().regex(emailRegex, 'Invalid email address'),
     otp: z.string().length(6, 'OTP must be 6 digits'),
     newPassword: z.string().min(6, 'Password must be at least 6 characters').max(128),
 });

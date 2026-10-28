@@ -2,8 +2,12 @@
 // characters beyond the limit never silently become part of the hash contract.
 const BCRYPT_MAX_BYTES = 72;
 
-export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/; // regex for email
-export const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,64}$/; // regex for password
+// Shared with server/validators/schemas.js so the Zod gate and the controller
+// agree on what a usable address looks like. The OTP email is the real check.
+export const emailRegex = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)*\.[^\s@.]{2,}$/; // regex for email
+// The `u` flag makes `.` count code points, so an emoji is one character of the
+// 64 rather than two UTF-16 units. The byte cap below still guards bcrypt.
+export const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,64}$/u; // regex for password
 
 export function isValidPassword(password) {
     return (
