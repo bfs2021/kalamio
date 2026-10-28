@@ -4,7 +4,7 @@ import User, { generateAvatar } from '../Schema/User.js';
 import LoginAttempt from '../Schema/LoginAttempt.js';
 import AuthCode from '../Schema/AuthCode.js';
 import passport from 'passport';
-import { emailRegex, passwordRegex } from '../utils/regex.js';
+import { emailRegex, isValidPassword } from '../utils/regex.js';
 import { generateUsername } from '../utils/helpers.js';
 import { isGoogleAuthEnabled } from '../strategies/google.strategy.js';
 import { generateTokenPair, generateAccessToken, verifyRefreshToken, verifyAccessToken, hashToken, safeEqual } from '../services/token.service.js';
@@ -62,7 +62,7 @@ export const signup = async (req, res) => {
         if (!emailRegex.test(email)) {
             return res.status(422).json({ error: ERRORS.EMAIL_INVALID });
         }
-        if (!passwordRegex.test(password)) {
+        if (!isValidPassword(password)) {
             return res.status(422).json({ error: ERRORS.PASSWORD_WEAK });
         }
 
@@ -476,7 +476,7 @@ export const resetPassword = async (req, res) => {
             return res.status(422).json({ error: "Email, OTP, and new password are required" });
         }
 
-        if (!passwordRegex.test(newPassword)) {
+        if (!isValidPassword(newPassword)) {
             return res.status(422).json({ error: ERRORS.PASSWORD_WEAK });
         }
 
@@ -708,7 +708,7 @@ export const changePassword = async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
 
-        if (!passwordRegex.test(currentPassword) || !passwordRegex.test(newPassword)) {
+        if (!isValidPassword(currentPassword) || !isValidPassword(newPassword)) {
             return res.status(422).json({ error: ERRORS.PASSWORD_WEAK });
         }
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { emailRegex, passwordRegex } from './regex.js';
+import { emailRegex, passwordRegex, isValidPassword } from './regex.js';
 
 describe('emailRegex', () => {
     it.each([
@@ -51,5 +51,25 @@ describe('passwordRegex', () => {
         'Aa1', // below the minimum
     ])('rejects password %s', (password) => {
         expect(passwordRegex.test(password)).toBe(false);
+    });
+});
+
+describe('isValidPassword', () => {
+    it('accepts a password exactly at the bcrypt 72-byte limit', () => {
+        const password = `Aa1${'é'.repeat(34)}b`; // 3 + 68 + 1 = 72 bytes
+        expect(Buffer.byteLength(password, 'utf8')).toBe(72);
+        expect(isValidPassword(password)).toBe(true);
+    });
+
+    it('rejects a password above the bcrypt 72-byte limit', () => {
+        const password = `Aa1${'é'.repeat(34)}bb`; // 73 bytes
+        expect(Buffer.byteLength(password, 'utf8')).toBe(73);
+        expect(isValidPassword(password)).toBe(false);
+    });
+
+    it('still applies the character rules', () => {
+        expect(isValidPassword('Aa1abcdef')).toBe(true);
+        expect(isValidPassword('a1bcdef')).toBe(false);
+        expect(isValidPassword(undefined)).toBe(false);
     });
 });
