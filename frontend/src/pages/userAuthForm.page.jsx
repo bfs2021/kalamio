@@ -6,6 +6,7 @@ import googleIcon from "../imgs/google.png";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../common/api";
+import { emailRegex, passwordRegex } from "../common/validation";
 import { storeInSession } from "../common/session";
 import { UserContext } from "../App";
 import Icon from "../components/Icon";
@@ -23,12 +24,6 @@ const UserAuthForm = ( {type} ) => {
         e.preventDefault();
 
         let serverRoute = type == "sign-in" ? "/signin" : "/signup"
-
-        // Permissive on purpose: only catches obvious typos (missing @ / dot / whitespace).
-        // The old pattern blocked plus-addressing (user+tag@x.com) and TLDs longer than
-        // 3 chars (.online, .photography). The server is authoritative on deliverability.
-        let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/; // regex for email
-        let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
 
         //formData
         let form = new FormData(document.getElementById("formElement"));
@@ -53,7 +48,7 @@ const UserAuthForm = ( {type} ) => {
             return toast.error("Email is invalid" );
         }
         if(!passwordRegex.test(password)){
-            return toast.error("Password should be 6 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters");
+            return toast.error("Password should be 6 to 64 characters long with a numeric, 1 lowercase and 1 uppercase letters");
         }
 
         api.post(serverRoute, formData)

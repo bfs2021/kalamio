@@ -5,6 +5,7 @@ import AnimationWrapper from "../common/page-animation";
 import InputBox from "../components/input.component";
 import toast from "react-hot-toast";
 import api from "../common/api";
+import { emailRegex } from "../common/validation";
 
 const ForgotPassword = () => {
 
@@ -25,7 +26,6 @@ const ForgotPassword = () => {
             return toast.error("Enter your email address");
         }
 
-        const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (!emailRegex.test(emailVal)) {
             return toast.error("Email is invalid");
         }

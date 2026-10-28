@@ -4,6 +4,7 @@ import AnimationWrapper from "../common/page-animation";
 import InputBox from "../components/input.component";
 import toast from "react-hot-toast";
 import api from "../common/api";
+import { passwordRegex } from "../common/validation";
 import { lookInSession, storeInSession } from "../common/session";
 import { UserContext } from "../App";
 
@@ -52,7 +53,6 @@ const ChangePassword = () => {
     let { userAuth, userAuth: { access_token }, setUserAuth } = useContext(UserContext);
 
     let changePasswordForm = useRef();
-    let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
 
     const [newPassword, setNewPassword] = useState("");
 
@@ -73,7 +73,7 @@ const ChangePassword = () => {
         }
 
         if(!passwordRegex.test(currentPassword) || !passwordRegex.test(newPwd)){
-            return toast.error("Password should be 6 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters")
+            return toast.error("Password should be 6 to 64 characters long with a numeric, 1 lowercase and 1 uppercase letters")
         }
 
         if(newPwd !== confirmPassword){
